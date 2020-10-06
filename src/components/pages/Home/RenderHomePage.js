@@ -1,17 +1,18 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Button } from 'antd';
+import { Typography } from 'antd';
 
 function RenderHomePage(props) {
-  const { userInfo, authService } = props;
+  // const { userInfo, authService } = props;
+  const { userInfo } = props;
+  const { Title } = Typography;
+
   return (
     <div>
-      <h1>Hi {userInfo.name} Welcome to Labs Basic SPA</h1>
+      <h1>Hi {userInfo.name},</h1>
+      <Title>Welcome to Eco Soap Bank</Title>
+
+      {/*
       <div>
-        <p>
-          This is an example of a common example of how we'd like for you to
-          approach components.
-        </p>
         <p>
           <Link to="/profile-list">Profiles Example</Link>
         </p>
@@ -30,6 +31,7 @@ function RenderHomePage(props) {
           </Button>
         </p>
       </div>
+      */}
     </div>
   );
 }
