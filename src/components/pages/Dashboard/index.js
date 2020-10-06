@@ -6,6 +6,8 @@ import { Typography, Collapse } from 'antd';
 import { ordersGet } from '../../../state/actions/ordersActions';
 import Order from '../../common/Order';
 
+import './dashboard.less';
+
 function Dashboard(props) {
   // load orders on first render
   useEffect(props.ordersGet, []);
@@ -15,7 +17,21 @@ function Dashboard(props) {
 
   return (
     <>
-      <Title>Dashboard</Title>
+      <div className={'dashboard'}>
+        <h1>Dashboard</h1>
+        <input
+          className="searchBar"
+          type="search"
+          placeholder="Search orders"
+        />
+
+        <select className={'priceSelect'}>
+          <option defaultValue="default">Choose order type</option>
+          <option value="unpriced">Unpriced</option>
+          <option value="priced">Priced</option>
+        </select>
+      </div>
+
       <Paragraph>
         <Collapse accordion>
           {props.orders &&
