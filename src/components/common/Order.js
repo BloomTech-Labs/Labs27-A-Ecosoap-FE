@@ -6,12 +6,12 @@ export default function Order(props) {
   const { order, formattedDate } = props;
 
   return (
-    <>
-      <h4>Status:</h4>
+    <div>
+      <h2>Status:</h2>
       <p>{order.status}</p>
-      <h4>Date ordered:</h4>
+      <h2>Date ordered:</h2>
       <p>{formattedDate}</p>
-      <h4>Shipping address:</h4>
+      <h2>Shipping address:</h2>
       <p>
         {order.contactName}
         <br />
@@ -19,7 +19,7 @@ export default function Order(props) {
         <br />
         {order.address}, {order.country}
       </p>
-      <h4>Contact info</h4>
+      <h2>Contact info</h2>
       <p>
         Phone: <a href={`tel:${order.contactPhone}`}>{order.contactPhone}</a>
         <br />
@@ -27,10 +27,10 @@ export default function Order(props) {
         <a href={`mailto:${order.contactEmail}`}>{order.contactEmail}</a>
       </p>
       {order.comments && (
-        <>
-          <h4>Comments:</h4>
+        <div>
+          <h2>Comments:</h2>
           <p>{order.comments}</p>
-        </>
+        </div>
       )}
       <p>
         <Button icon={<EditOutlined />}>Edit</Button>
@@ -38,6 +38,6 @@ export default function Order(props) {
           Cancel
         </Button>
       </p>
-    </>
+    </div>
   );
 }

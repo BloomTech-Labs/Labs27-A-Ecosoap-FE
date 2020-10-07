@@ -8,8 +8,6 @@ export default function TopHeader() {
   const { Header } = Layout;
 
   function logout(event) {
-    event.preventDefault();
-
     authService.logout();
   }
 
