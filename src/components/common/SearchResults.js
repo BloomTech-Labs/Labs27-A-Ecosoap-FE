@@ -14,7 +14,7 @@ export default function SearchResults(props) {
     const found = [];
     const modifiedQuery = searchQuery.trim().toLowerCase();
 
-    for (let order of props.orders) {
+    for (let order of orders) {
       const contactName = order.contactName.trim().toLowerCase();
       const organization = order.organization.trim().toLowerCase();
       const address = order.address.trim().toLowerCase();

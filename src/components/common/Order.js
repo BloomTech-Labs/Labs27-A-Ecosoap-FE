@@ -3,13 +3,7 @@ import { Button } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
 export default function Order(props) {
-  const {
-    order,
-    formattedDate,
-    isEditModalVisible,
-    setEditModalVisible,
-    setEditingOrder,
-  } = props;
+  const { order, formattedDate, setEditModalVisible, setEditingOrder } = props;
 
   function handleOrderEdit() {
     setEditingOrder(order);

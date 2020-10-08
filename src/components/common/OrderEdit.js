@@ -10,10 +10,6 @@ const layout = {
   },
 };
 
-const tailLayout = {
-  wrapperCol: { offset: 6 },
-};
-
 function OrderEdit(props) {
   const {
     setEditModalVisible,
@@ -34,12 +30,11 @@ function OrderEdit(props) {
     setEditModalVisible(false);
   }
 
+  // Change 'editingOrder' state when any form field changes its value
   function inputChangeHandler(event) {
-    const fieldId = event.target.id;
-
     setEditingOrder({
       ...editingOrder,
-      [fieldId]: event.target.value,
+      [event.target.id]: event.target.value,
     });
   }
 
@@ -116,8 +111,4 @@ function OrderEdit(props) {
   );
 }
 
-const mapStateToProps = state => {
-  return {};
-};
-
-export default connect(mapStateToProps, { orderEdit })(OrderEdit);
+export default connect(() => {}, { orderEdit })(OrderEdit);
