@@ -7,14 +7,19 @@ import { SearchOutlined } from '@ant-design/icons';
 import { ordersGet } from '../../../state/actions/ordersActions';
 import Order from '../../common/Order';
 import SearchResults from '../../common/SearchResults';
+import OrderEdit from '../../common/OrderEdit';
 
 import './Dashboard.less';
 
+// Ant design components
+const { Title, Paragraph } = Typography;
+const { Panel } = Collapse;
+
 function Dashboard(props) {
+  const orders = props.orders;
+
   // load orders on first render
   useEffect(props.ordersGet, []);
-
-  const orders = props.orders;
 
   // search for an order
   const [searchQuery, setSearchQuery] = useState('');
@@ -37,9 +42,8 @@ function Dashboard(props) {
     setPriceFilter(value);
   }
 
-  // Ant design components
-  const { Title, Paragraph } = Typography;
-  const { Panel } = Collapse;
+  const [isEditModalVisible, setEditModalVisible] = useState(false);
+  const [editingOrder, setEditingOrder] = useState({});
 
   return (
     <>
@@ -77,7 +81,7 @@ function Dashboard(props) {
         <h2>All orders</h2>
         <Collapse accordion>
           {orders &&
-            orders.map((order, key) => {
+            orders.map((order, index) => {
               const d = new Date(order.dateOrdered);
               // date in a human readable format
               const formattedDate = `${d.getMonth() +
@@ -95,14 +99,28 @@ function Dashboard(props) {
               return (
                 <Panel
                   header={`Order #${order.orderId} (${formattedDate})`}
-                  key={key}
+                  key={index}
+                  isEditModalVisible={isEditModalVisible}
+                  setEditModalVisible={setEditModalVisible}
                 >
-                  <Order order={order} formattedDate={formattedDate} />
+                  <Order
+                    order={order}
+                    formattedDate={formattedDate}
+                    setEditModalVisible={setEditModalVisible}
+                    isEditModalVisible={isEditModalVisible}
+                    setEditingOrder={setEditingOrder}
+                  />
                 </Panel>
               );
             })}
         </Collapse>
       </Paragraph>
+      <OrderEdit
+        isEditModalVisible={isEditModalVisible}
+        setEditModalVisible={setEditModalVisible}
+        editingOrder={editingOrder}
+        setEditingOrder={setEditingOrder}
+      />
     </>
   );
 }

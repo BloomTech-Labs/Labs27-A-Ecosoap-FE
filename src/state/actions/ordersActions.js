@@ -1,5 +1,6 @@
-import { ORDERS_GET_SUCCESS } from './actionTypes';
+import { ORDERS_GET_SUCCESS, ORDER_EDIT_SUCCESS } from './actionTypes';
 
+// Get all orders
 export const ordersGet = () => dispatch => {
   const sampleData = [
     {
@@ -41,5 +42,13 @@ export const ordersGet = () => dispatch => {
   dispatch({
     type: ORDERS_GET_SUCCESS,
     payload: sampleData,
+  });
+};
+
+// Edit an individual order
+export const orderEdit = editingOrder => dispatch => {
+  dispatch({
+    type: ORDER_EDIT_SUCCESS,
+    payload: editingOrder,
   });
 };
