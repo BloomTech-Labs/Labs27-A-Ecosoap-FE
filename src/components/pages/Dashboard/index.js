@@ -8,12 +8,12 @@ import Order from '../../common/Order';
 
 import './dashboard.less';
 
+const { Paragraph } = Typography;
+const { Panel } = Collapse;
+
 function Dashboard(props) {
   // load orders on first render
   useEffect(props.ordersGet, []);
-
-  const { Title, Paragraph } = Typography;
-  const { Panel } = Collapse;
 
   return (
     <>

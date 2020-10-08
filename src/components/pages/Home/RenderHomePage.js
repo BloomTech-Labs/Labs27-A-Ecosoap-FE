@@ -1,9 +1,10 @@
 import React from 'react';
 import { Typography } from 'antd';
 
+const { Title } = Typography;
+
 function RenderHomePage(props) {
   const { userInfo } = props;
-  const { Title } = Typography;
 
   return (
     <div>
