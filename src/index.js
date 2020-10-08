@@ -16,13 +16,27 @@ import { ProfileListPage } from './components/pages/ProfileList';
 import { LoginPage } from './components/pages/Login';
 import { HomePage } from './components/pages/Home';
 import { ExampleDataViz } from './components/pages/ExampleDataViz';
+import Dashboard from './components/pages/Dashboard';
+
 import { config } from './utils/oktaConfig';
 import { LoadingComponent } from './components/common';
+
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+import rootReducer from './state/reducers';
+
+import TopHeader from './components/common/TopHeader';
+import { Layout } from 'antd';
+
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 ReactDOM.render(
   <Router>
     <React.StrictMode>
-      <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     </React.StrictMode>
   </Router>,
   document.getElementById('root')
@@ -39,22 +53,30 @@ function App() {
     history.push('/login');
   };
 
+  const { Content } = Layout;
+
   return (
     <Security {...config} onAuthRequired={authHandler}>
-      <Switch>
-        <Route path="/login" component={LoginPage} />
-        <Route path="/implicit/callback" component={LoginCallback} />
-        {/* any of the routes you need secured should be registered as SecureRoutes */}
-        <SecureRoute
-          path="/"
-          exact
-          component={() => <HomePage LoadingComponent={LoadingComponent} />}
-        />
-        <SecureRoute path="/example-list" component={ExampleListPage} />
-        <SecureRoute path="/profile-list" component={ProfileListPage} />
-        <SecureRoute path="/datavis" component={ExampleDataViz} />
-        <Route component={NotFoundPage} />
-      </Switch>
+      <Layout>
+        <TopHeader />
+        <Content style={{ padding: '50px' }}>
+          <Switch>
+            <Route path="/login" component={LoginPage} />
+            <Route path="/implicit/callback" component={LoginCallback} />
+            {/* any of the routes you need secured should be registered as SecureRoutes */}
+            <SecureRoute
+              path="/"
+              exact
+              component={() => <HomePage LoadingComponent={LoadingComponent} />}
+            />
+            <SecureRoute path="/example-list" component={ExampleListPage} />
+            <SecureRoute path="/profile-list" component={ProfileListPage} />
+            <SecureRoute path="/datavis" component={ExampleDataViz} />
+            <SecureRoute path="/dashboard" component={Dashboard} />
+            <Route component={NotFoundPage} />
+          </Switch>
+        </Content>
+      </Layout>
     </Security>
   );
 }
