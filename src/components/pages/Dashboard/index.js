@@ -42,6 +42,7 @@ function Dashboard(props) {
     setPriceFilter(value);
   }
 
+  // States for edit order modal window
   const [isEditModalVisible, setEditModalVisible] = useState(false);
   const [editingOrder, setEditingOrder] = useState({});
 

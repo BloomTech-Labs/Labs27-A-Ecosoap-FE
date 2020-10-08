@@ -1,14 +1,25 @@
+// React imports
+
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import {
   BrowserRouter as Router,
   Route,
   useHistory,
   Switch,
 } from 'react-router-dom';
-import { Security, LoginCallback, SecureRoute } from '@okta/okta-react';
 
-import 'antd/dist/antd.less';
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+
+// Okta
+
+import { Security, LoginCallback, SecureRoute } from '@okta/okta-react';
+import { config } from './utils/oktaConfig';
+
+// Custom components
 
 import { NotFoundPage } from './components/pages/NotFound';
 import { ExampleListPage } from './components/pages/ExampleList';
@@ -17,16 +28,15 @@ import { LoginPage } from './components/pages/Login';
 import { HomePage } from './components/pages/Home';
 import { ExampleDataViz } from './components/pages/ExampleDataViz';
 import Dashboard from './components/pages/Dashboard';
-
-import { config } from './utils/oktaConfig';
+import TopHeader from './components/common/TopHeader';
 import { LoadingComponent } from './components/common';
 
-import { createStore, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux';
-import thunk from 'redux-thunk';
+// Reducers
 import rootReducer from './state/reducers';
 
-import TopHeader from './components/common/TopHeader';
+// Styles
+
+import 'antd/dist/antd.less';
 import { Layout } from 'antd';
 
 const store = createStore(rootReducer, applyMiddleware(thunk));

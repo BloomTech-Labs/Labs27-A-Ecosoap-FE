@@ -4,6 +4,7 @@ export default function ordersReducer(state = [], action) {
   switch (action.type) {
     case ORDERS_GET_SUCCESS:
       return action.payload;
+
     case ORDER_EDIT_SUCCESS:
       const modifiedOrder = state.map(currentOrder => {
         if (currentOrder.orderId === action.payload.orderId) {
@@ -12,7 +13,9 @@ export default function ordersReducer(state = [], action) {
           return currentOrder;
         }
       });
+
       return modifiedOrder;
+
     default:
       return state;
   }
