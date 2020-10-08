@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 import { useOktaAuth } from '@okta/okta-react';
 
+const { Header } = Layout;
+
 export default function TopHeader() {
   const { authService, authState } = useOktaAuth();
-  const { Header } = Layout;
 
   function logout(event) {
     authService.logout();
