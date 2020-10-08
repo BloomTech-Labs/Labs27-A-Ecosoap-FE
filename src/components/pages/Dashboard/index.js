@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
-import { Typography, Collapse, Select, Input } from 'antd';
+import { Typography, Collapse, Select, Input, Button } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
 import { ordersGet } from '../../../state/actions/ordersActions';
@@ -62,6 +62,11 @@ function Dashboard(props) {
             <option value="determined">Unpriced</option>
             <option value="undetermined">Priced</option>
           </Select>
+        </div>
+        <div>
+          <Button href="/NewOrderForm" type="primary">
+            Add order
+          </Button>
         </div>
       </div>
 
