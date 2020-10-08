@@ -1,4 +1,4 @@
-## Login and Authentication w/ Okta.
+## Login and Authentication w/ Okta
 
 - The `LoginContainer.js` file includes a widget that is provided to us by Okta.
 - This widget is the key to `user authentication and management` within your application.
