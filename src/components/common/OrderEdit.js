@@ -111,4 +111,8 @@ function OrderEdit(props) {
   );
 }
 
-export default connect(() => {}, { orderEdit })(OrderEdit);
+function mapStateToProps(state) {
+  return {};
+}
+
+export default connect(mapStateToProps, { orderEdit })(OrderEdit);

@@ -63,9 +63,9 @@ function Dashboard(props) {
         <div>
           Filter by price:{' '}
           <Select defaultValue="all" onChange={priceDeterminedHandler}>
-            <option value="all">All orders</option>
-            <option value="determined">Unpriced</option>
-            <option value="undetermined">Priced</option>
+            <Select.Option value="all">All orders</Select.Option>
+            <Select.Option value="determined">Unpriced</Select.Option>
+            <Select.Option value="undetermined">Priced</Select.Option>
           </Select>
         </div>
       </div>
