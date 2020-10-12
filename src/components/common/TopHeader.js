@@ -20,9 +20,12 @@ export default function TopHeader() {
             <Link to="/">Home</Link>
           </Menu.Item>
           <Menu.Item key="1">
-            <Link to="/dashboard">Dashboard</Link>
+            <Link to="/new-order">New Order</Link>
           </Menu.Item>
           <Menu.Item key="2">
+            <Link to="/dashboard">Dashboard</Link>
+          </Menu.Item>
+          <Menu.Item key="3">
             <a href="/#" onClick={logout}>
               Logout
             </a>
