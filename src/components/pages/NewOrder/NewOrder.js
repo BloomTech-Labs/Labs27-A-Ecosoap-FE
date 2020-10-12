@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
-import './NewOrder.less';
-
-import { Typography, Collapse, Select, Input, Button, Form } from 'antd';
+import { Typography, Input, Button, Form } from 'antd';
 
 const { Title } = Typography;
 
@@ -20,17 +18,18 @@ function NewOrder() {
   const [profileData, setProfileData] = useState(sample);
 
   const layout = {
-    labelCol: { span: 5 },
+    labelCol: { span: 4 },
+    wrapperCol: { span: 7 },
   };
 
   const tailLayout = {
-    wrapperCol: { offset: 5 },
+    wrapperCol: { offset: 4 },
   };
 
   return (
     <div>
       <Form {...layout} className="purchaseForm">
-        <h2>Purchase Order Form</h2>
+        <Title>New Order</Title>
 
         <Form.Item label="Contact Name">
           <Input value={profileData.name} />
@@ -61,15 +60,14 @@ function NewOrder() {
         </Form.Item>
 
         <Form.Item label="Comments">
-          <Input />
+          <Input.TextArea />
         </Form.Item>
 
         <Form.Item label="Quantity">
-          <Input type="number" />
+          <Input type="number" min="1" />
         </Form.Item>
 
         <Form.Item {...tailLayout}>
-          <div>Price: </div>
           <Button type="primary">Submit</Button>
         </Form.Item>
       </Form>
