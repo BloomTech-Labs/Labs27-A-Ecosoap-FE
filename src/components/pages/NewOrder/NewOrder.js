@@ -1,21 +1,87 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-
-import { Typography, Input, Button, Form } from 'antd';
+import * as yup from 'yup';
+import { Typography, Input, Button, Form, Alert } from 'antd';
+import newOrderSchema from './newOrderSchema';
 
 const { Title } = Typography;
 
 function NewOrder() {
+  // Initial form data
+
   const sample = {
-    name: 'bob',
-    phone: 2498239283,
-    email: 'bob@bobsheepshack.com',
+    contactName: 'bob',
+    contactPhone: 2498239283,
+    contactEmail: 'bob@bobsheepshack.com',
     organization: 'bob sheep shack',
     address: '123 wallaby way',
     country: 'USA',
+    organizationWebsite: 'bobsheepshack.com',
+    quantity: 1,
   };
 
-  const [profileData, setProfileData] = useState(sample);
+  const initialErrors = {
+    contactName: '',
+    contactPhone: '',
+    contactEmail: '',
+    organization: '',
+    address: '',
+    country: '',
+    organizationWebsite: '',
+    quantity: '',
+  };
+
+  const [orderFormData, setOrderFormData] = useState(sample);
+
+  // Alert error messages
+  const [formErrors, setFormErrors] = useState(initialErrors);
+
+  // Submit button
+  const [submitDisabled, setSubmitDisabled] = useState('disabled');
+
+  // Change 'orderFormData' state when any form field changes its value
+  function inputChangeHandler(event) {
+    const field = event.target;
+
+    // sync with state
+    setOrderFormData({
+      ...orderFormData,
+      [field.id]: field.value,
+    });
+
+    // check if valid
+    checkField(field);
+  }
+
+  // Checks the validity of an input field
+  function checkField(field) {
+    yup
+      .reach(newOrderSchema, field.id)
+      .validate(field.value)
+      .then(valid => {
+        setFormErrors({ ...formErrors, [field.id]: '' });
+        setSubmitDisabled('');
+      })
+      .catch(err => {
+        setFormErrors({ ...formErrors, [field.id]: err.errors[0] });
+        setSubmitDisabled('disabled');
+      });
+  }
+
+  // Check form validity on every change, enable/disable the submit button
+  useEffect(() => {
+    yup
+      .reach(newOrderSchema)
+      .validate(orderFormData)
+      .then(valid => {
+        setSubmitDisabled('');
+      })
+      .catch(err => {
+        setSubmitDisabled('disabled');
+      });
+  }, [orderFormData]);
+
+  // Ant styling
 
   const layout = {
     labelCol: { span: 4 },
@@ -28,47 +94,101 @@ function NewOrder() {
 
   return (
     <div>
+      <Title>New Order</Title>
+      <div>
+        {Object.keys(formErrors).map((error, key) => {
+          if (formErrors[error]) {
+            return (
+              <Alert
+                message={formErrors[error]}
+                key={key}
+                type="error"
+                closable
+              />
+            );
+          }
+        })}
+      </div>
       <Form {...layout} className="purchaseForm">
-        <Title>New Order</Title>
-
-        <Form.Item label="Contact Name">
-          <Input value={profileData.name} />
+        <Form.Item label="Contact name:">
+          <Input
+            id="contactName"
+            value={orderFormData.contactName}
+            onChange={inputChangeHandler}
+          />
         </Form.Item>
 
-        <Form.Item label="Contact Phone">
-          <Input value={profileData.phone} />
+        <Form.Item label="Organization:">
+          <Input
+            id="organization"
+            value={orderFormData.organization}
+            onChange={inputChangeHandler}
+          />
         </Form.Item>
 
-        <Form.Item label="Contact Email">
-          <Input type="email" value={profileData.email} />
+        <Form.Item label="Website:">
+          <Input
+            id="organizationWebsite"
+            value={orderFormData.organizationWebsite}
+            onChange={inputChangeHandler}
+          />
         </Form.Item>
 
-        <Form.Item label="Organization">
-          <Input value={profileData.organization} />
+        <Form.Item label="Contact phone:">
+          <Input
+            id="contactPhone"
+            value={orderFormData.contactPhone}
+            onChange={inputChangeHandler}
+          />
         </Form.Item>
 
-        <Form.Item label="Organization Website">
-          <Input />
+        <Form.Item label="Contact e-mail:">
+          <Input
+            id="contactEmail"
+            value={orderFormData.contactEmail}
+            onChange={inputChangeHandler}
+          />
         </Form.Item>
 
-        <Form.Item label="Address">
-          <Input value={profileData.address} />
+        <Form.Item label="Address:">
+          <Input
+            id="address"
+            value={orderFormData.address}
+            onChange={inputChangeHandler}
+          />
         </Form.Item>
 
-        <Form.Item label="Country">
-          <Input value={profileData.country} />
+        <Form.Item label="Country:">
+          <Input
+            id="country"
+            value={orderFormData.country}
+            onChange={inputChangeHandler}
+          />
         </Form.Item>
 
-        <Form.Item label="Comments">
-          <Input.TextArea />
+        <Form.Item label="Comments:">
+          <Input.TextArea
+            id="comments"
+            rows="6"
+            value={orderFormData.comments}
+            onChange={inputChangeHandler}
+          />
         </Form.Item>
 
-        <Form.Item label="Quantity">
-          <Input type="number" min="1" />
+        <Form.Item label="Quantity:">
+          <Input
+            type="number"
+            min="1"
+            value={orderFormData.quantity}
+            onChange={inputChangeHandler}
+            id="quantity"
+          />
         </Form.Item>
 
         <Form.Item {...tailLayout}>
-          <Button type="primary">Submit</Button>
+          <Button type="primary" disabled={submitDisabled}>
+            Submit
+          </Button>
         </Form.Item>
       </Form>
     </div>
