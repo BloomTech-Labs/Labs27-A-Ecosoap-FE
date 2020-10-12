@@ -29,7 +29,7 @@ import { LoginPage } from './components/pages/Login';
 import { HomePage } from './components/pages/Home';
 import { ExampleDataViz } from './components/pages/ExampleDataViz';
 import Dashboard from './components/pages/Dashboard';
-import NewOrderForm from './components/pages/NewOrder/NewOrderForm';
+import NewOrder from './components/pages/NewOrder/NewOrder';
 import TopHeader from './components/common/TopHeader';
 
 // Reducers
@@ -81,7 +81,7 @@ function App() {
             <SecureRoute path="/profile-list" component={ProfileListPage} />
             <SecureRoute path="/datavis" component={ExampleDataViz} />
             <SecureRoute path="/dashboard" component={Dashboard} />
-            <SecureRoute path="/NewOrderForm" component={NewOrderForm} />
+            <SecureRoute path="/new-order" component={NewOrder} />
             <Route component={NotFoundPage} />
           </Switch>
         </Content>

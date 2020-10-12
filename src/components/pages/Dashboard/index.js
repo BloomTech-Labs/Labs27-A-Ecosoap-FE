@@ -69,7 +69,7 @@ function Dashboard(props) {
           </Select>
         </div>
         <div>
-          <Button href="/NewOrderForm" type="primary">
+          <Button href="/new-order" type="primary">
             Add order
           </Button>
         </div>

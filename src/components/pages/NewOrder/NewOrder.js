@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
-import './NewOrderForm.less';
+import './NewOrder.less';
 
 import { Typography, Collapse, Select, Input, Button, Form } from 'antd';
 
 const { Title } = Typography;
 
-function NewOrderForm() {
+function NewOrder() {
   const sample = {
     name: 'bob',
     phone: 2498239283,
@@ -81,4 +81,4 @@ const mapStateToProps = state => {
   return {};
 };
 
-export default connect(mapStateToProps, {})(NewOrderForm);
+export default connect(mapStateToProps, {})(NewOrder);
