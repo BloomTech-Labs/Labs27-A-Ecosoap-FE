@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import * as yup from 'yup';
 import { Typography, Input, Button, Form, Alert } from 'antd';
+
 import newOrderSchema from './newOrderSchema';
+import './NewOrder.less';
 
 const { Title } = Typography;
 
@@ -83,33 +85,41 @@ function NewOrder() {
 
   // Ant styling
 
-  const layout = {
-    labelCol: { span: 4 },
+  const orderFormLayout = {
+    labelCol: { span: 3 },
     wrapperCol: { span: 7 },
   };
 
-  const tailLayout = {
-    wrapperCol: { offset: 4 },
+  const submitLayout = {
+    wrapperCol: { offset: 3 },
+  };
+
+  const errorLayout = {
+    wrapperCol: { offset: 3, span: 7 },
   };
 
   return (
     <div>
       <Title>New Order</Title>
-      <div>
-        {Object.keys(formErrors).map((error, key) => {
-          if (formErrors[error]) {
-            return (
-              <Alert
-                message={formErrors[error]}
-                key={key}
-                type="error"
-                closable
-              />
-            );
-          }
-        })}
+      <div className="errors">
+        <Form {...errorLayout}>
+          <Form.Item>
+            {Object.keys(formErrors).map((error, key) => {
+              if (formErrors[error]) {
+                return (
+                  <Alert
+                    message={formErrors[error]}
+                    key={key}
+                    type="error"
+                    closable
+                  />
+                );
+              }
+            })}
+          </Form.Item>
+        </Form>
       </div>
-      <Form {...layout} className="purchaseForm">
+      <Form {...orderFormLayout} className="purchaseForm">
         <Form.Item label="Contact name:">
           <Input
             id="contactName"
@@ -185,7 +195,7 @@ function NewOrder() {
           />
         </Form.Item>
 
-        <Form.Item {...tailLayout}>
+        <Form.Item {...submitLayout}>
           <Button type="primary" disabled={submitDisabled}>
             Submit
           </Button>
