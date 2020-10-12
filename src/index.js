@@ -21,6 +21,7 @@ import { config } from './utils/oktaConfig';
 
 // Custom components
 
+import { LoadingComponent } from './components/common';
 import { NotFoundPage } from './components/pages/NotFound';
 import { ExampleListPage } from './components/pages/ExampleList';
 import { ProfileListPage } from './components/pages/ProfileList';
@@ -28,14 +29,13 @@ import { LoginPage } from './components/pages/Login';
 import { HomePage } from './components/pages/Home';
 import { ExampleDataViz } from './components/pages/ExampleDataViz';
 import Dashboard from './components/pages/Dashboard';
+import NewOrderForm from './components/pages/NewOrder/NewOrderForm';
 import TopHeader from './components/common/TopHeader';
-import { LoadingComponent } from './components/common';
 
 // Reducers
 import rootReducer from './state/reducers';
 
 // Styles
-
 import 'antd/dist/antd.less';
 import { Layout } from 'antd';
 
@@ -81,6 +81,7 @@ function App() {
             <SecureRoute path="/profile-list" component={ProfileListPage} />
             <SecureRoute path="/datavis" component={ExampleDataViz} />
             <SecureRoute path="/dashboard" component={Dashboard} />
+            <SecureRoute path="/NewOrderForm" component={NewOrderForm} />
             <Route component={NotFoundPage} />
           </Switch>
         </Content>
