@@ -75,3 +75,6 @@ export const postOrderData = (authState, order) =>
 
 export const deleteOrderData = (authState, id) =>
   deleteData({ authState, url: `${ordersUrl}/${id}` });
+
+export const editOrderData = (authState, id, updatedData) =>
+  putData({ authState, url: `${ordersUrl}/${id}`, updatedData });

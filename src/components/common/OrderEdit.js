@@ -16,12 +16,13 @@ function OrderEdit(props) {
     isEditModalVisible,
     editingOrder,
     setEditingOrder,
+    handleEdit,
   } = props;
 
   // Saves edited data and closes the modal window
   function saveEdit(event) {
     setEditModalVisible(false);
-    props.orderEdit(editingOrder);
+    handleEdit(editingOrder.id);
   }
 
   // Closes the modal window without saving

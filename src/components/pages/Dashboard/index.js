@@ -4,7 +4,11 @@ import { connect } from 'react-redux';
 import { Typography, Collapse, Select, Input, Button } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
-import { ordersGet, orderDelete } from '../../../state/actions/ordersActions';
+import {
+  ordersGet,
+  orderDelete,
+  orderEdit,
+} from '../../../state/actions/ordersActions';
 import Order from '../../common/Order';
 import SearchResults from '../../common/SearchResults';
 import OrderEdit from '../../common/OrderEdit';
@@ -20,10 +24,10 @@ function Dashboard(props) {
   const orders = props.orders;
   const { authState } = useOktaAuth();
 
-  // load orders on first render
+  // load orders
   useEffect(() => {
     props.ordersGet(authState);
-  }, []);
+  }, [props.orders]);
 
   // search for an order
   const [searchQuery, setSearchQuery] = useState('');
@@ -52,6 +56,10 @@ function Dashboard(props) {
 
   function handleDelete(id) {
     props.orderDelete(authState, id);
+  }
+
+  function handleEdit(id) {
+    props.orderEdit(authState, id, editingOrder);
   }
 
   return (
@@ -135,6 +143,7 @@ function Dashboard(props) {
         setEditModalVisible={setEditModalVisible}
         editingOrder={editingOrder}
         setEditingOrder={setEditingOrder}
+        handleEdit={handleEdit}
       />
     </>
   );
@@ -146,4 +155,6 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { ordersGet, orderDelete })(Dashboard);
+export default connect(mapStateToProps, { ordersGet, orderDelete, orderEdit })(
+  Dashboard
+);

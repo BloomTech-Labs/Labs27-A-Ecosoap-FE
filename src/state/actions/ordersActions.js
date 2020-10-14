@@ -2,15 +2,22 @@ import {
   ORDERS_GET_LOADING,
   ORDERS_GET_FAILURE,
   ORDERS_GET_SUCCESS,
-  ORDER_EDIT_SUCCESS,
   ORDER_ADD_LOADING,
   ORDER_ADD_SUCCESS,
   ORDER_ADD_FAILURE,
   ORDER_DELETE_LOADING,
   ORDER_DELETE_SUCCESS,
   ORDER_DELETE_FAILURE,
+  ORDER_EDIT_LOADING,
+  ORDER_EDIT_SUCCESS,
+  ORDER_EDIT_FAILURE,
 } from './actionTypes';
-import { getOrderData, postOrderData, deleteOrderData } from '../../api';
+import {
+  getOrderData,
+  postOrderData,
+  deleteOrderData,
+  editOrderData,
+} from '../../api';
 
 // Get all orders
 export const ordersGet = authState => dispatch => {
@@ -20,8 +27,6 @@ export const ordersGet = authState => dispatch => {
 
   getOrderData(authState)
     .then(payload => {
-      console.log(payload);
-
       dispatch({
         type: ORDERS_GET_SUCCESS,
         payload,
@@ -60,8 +65,6 @@ export const orderDelete = (authState, id) => dispatch => {
   });
   deleteOrderData(authState, id)
     .then(payload => {
-      console.log(payload);
-
       dispatch({
         type: ORDER_DELETE_SUCCESS,
         payload: id,
@@ -76,9 +79,22 @@ export const orderDelete = (authState, id) => dispatch => {
 };
 
 // Edit an individual order
-export const orderEdit = editingOrder => dispatch => {
+export const orderEdit = (authState, id, updatedData) => dispatch => {
   dispatch({
-    type: ORDER_EDIT_SUCCESS,
-    payload: editingOrder,
+    type: ORDER_EDIT_LOADING,
   });
+
+  editOrderData(authState, id, updatedData)
+    .then(payload => {
+      dispatch({
+        type: ORDER_EDIT_SUCCESS,
+        payload: id,
+      });
+    })
+    .catch(err => {
+      dispatch({
+        type: ORDER_EDIT_FAILURE,
+        payload: err.message,
+      });
+    });
 };
