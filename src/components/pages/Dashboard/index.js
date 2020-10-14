@@ -9,7 +9,8 @@ import Order from '../../common/Order';
 import SearchResults from '../../common/SearchResults';
 import OrderEdit from '../../common/OrderEdit';
 
-import './Dashboard.less';
+import './dashboard.less';
+import { useOktaAuth } from '@okta/okta-react/dist/OktaContext';
 
 // Ant design components
 const { Title, Paragraph } = Typography;
@@ -17,9 +18,12 @@ const { Panel } = Collapse;
 
 function Dashboard(props) {
   const orders = props.orders;
+  const { authState } = useOktaAuth();
 
   // load orders on first render
-  useEffect(props.ordersGet, []);
+  useEffect(() => {
+    props.ordersGet(authState);
+  }, []);
 
   // search for an order
   const [searchQuery, setSearchQuery] = useState('');
@@ -133,7 +137,7 @@ function Dashboard(props) {
 
 const mapStateToProps = state => {
   return {
-    orders: state.orders,
+    orders: state.orders.orders,
   };
 };
 

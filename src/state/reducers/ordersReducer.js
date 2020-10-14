@@ -1,9 +1,26 @@
-import { ORDERS_GET_SUCCESS, ORDER_EDIT_SUCCESS } from '../actions/actionTypes';
+import {
+  ORDERS_GET_FAILURE,
+  ORDERS_GET_LOADING,
+  ORDERS_GET_SUCCESS,
+  ORDER_EDIT_SUCCESS,
+} from '../actions/actionTypes';
 
-export default function ordersReducer(state = [], action) {
+const initialState = {
+  orders: [],
+  loading: false,
+  error: '',
+};
+
+export default function ordersReducer(state = initialState, action) {
   switch (action.type) {
+    case ORDERS_GET_LOADING:
+      return { ...state, loading: true };
+
     case ORDERS_GET_SUCCESS:
-      return action.payload;
+      return { ...state, loading: false, orders: action.payload };
+
+    case ORDERS_GET_FAILURE:
+      return { ...state, loading: false, error: action.payload };
 
     case ORDER_EDIT_SUCCESS:
       const modifiedOrder = state.map(currentOrder => {
@@ -14,7 +31,7 @@ export default function ordersReducer(state = [], action) {
         }
       });
 
-      return modifiedOrder;
+      return { ...state, orders: modifiedOrder };
 
     default:
       return state;
