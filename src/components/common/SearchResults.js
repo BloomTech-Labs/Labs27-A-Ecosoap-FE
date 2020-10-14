@@ -16,14 +16,14 @@ export default function SearchResults(props) {
 
     for (let order of orders) {
       const contactName = order.contactName.trim().toLowerCase();
-      const organization = order.organization.trim().toLowerCase();
+      const organization = order.organization?.trim().toLowerCase();
       const address = order.address.trim().toLowerCase();
       const country = order.country.trim().toLowerCase();
       const contactEmail = order.contactEmail.trim().toLowerCase();
 
       if (
         contactName.includes(modifiedQuery) ||
-        organization.includes(modifiedQuery) ||
+        organization?.includes(modifiedQuery) ||
         address.includes(modifiedQuery) ||
         country.includes(modifiedQuery) ||
         contactEmail.includes(modifiedQuery)

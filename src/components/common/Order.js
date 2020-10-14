@@ -41,7 +41,11 @@ export default function Order(props) {
         <Button icon={<EditOutlined />} onClick={() => handleOrderEdit()}>
           Edit
         </Button>
-        <Button icon={<DeleteOutlined />} danger>
+        <Button
+          icon={<DeleteOutlined />}
+          danger
+          onClick={() => props.onDelete(order.id)}
+        >
           Cancel
         </Button>
       </p>

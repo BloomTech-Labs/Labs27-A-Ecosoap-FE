@@ -6,8 +6,11 @@ import {
   ORDER_ADD_LOADING,
   ORDER_ADD_SUCCESS,
   ORDER_ADD_FAILURE,
+  ORDER_DELETE_LOADING,
+  ORDER_DELETE_SUCCESS,
+  ORDER_DELETE_FAILURE,
 } from './actionTypes';
-import { getOrderData, postOrderData } from '../../api';
+import { getOrderData, postOrderData, deleteOrderData } from '../../api';
 
 // Get all orders
 export const ordersGet = authState => dispatch => {
@@ -32,23 +35,41 @@ export const ordersGet = authState => dispatch => {
     });
 };
 
-export const orderAdd = (authState, order) => dispatch => {
+export const orderAdd = (authState, newOrder) => dispatch => {
   dispatch({
     type: ORDER_ADD_LOADING,
   });
-
-  postOrderData(authState, order)
-    .then(payload => {
-      console.log(payload);
-
+  postOrderData(authState, newOrder)
+    .then(({ order }) => {
       dispatch({
         type: ORDER_ADD_SUCCESS,
-        payload,
+        payload: order,
       });
     })
     .catch(err => {
       dispatch({
         type: ORDER_ADD_FAILURE,
+        payload: err.message,
+      });
+    });
+};
+
+export const orderDelete = (authState, id) => dispatch => {
+  dispatch({
+    type: ORDER_DELETE_LOADING,
+  });
+  deleteOrderData(authState, id)
+    .then(payload => {
+      console.log(payload);
+
+      dispatch({
+        type: ORDER_DELETE_SUCCESS,
+        payload: id,
+      });
+    })
+    .catch(err => {
+      dispatch({
+        type: ORDER_DELETE_FAILURE,
         payload: err.message,
       });
     });

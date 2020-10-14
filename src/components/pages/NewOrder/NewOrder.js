@@ -2,24 +2,37 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import * as yup from 'yup';
 import { Typography, Input, Button, Form, Alert } from 'antd';
+import { useOktaAuth } from '@okta/okta-react';
 
+import { orderAdd } from '../../../state/actions/ordersActions';
 import newOrderSchema from './newOrderSchema';
 import './NewOrder.less';
 
 const { Title } = Typography;
 
-function NewOrder() {
+function NewOrder(props) {
+  const { authState } = useOktaAuth();
+
   // Initial form data
 
   const sample = {
     contactName: 'bob',
-    contactPhone: 2498239283,
+    contactPhone: '2498239283',
     contactEmail: 'bob@bobsheepshack.com',
     organization: 'bob sheep shack',
     address: '123 wallaby way',
     country: 'USA',
     organizationWebsite: 'bobsheepshack.com',
     quantity: 1,
+
+    /*
+      the following fields should be implemented on the backend
+    */
+
+    buyerId: 'not implemented',
+    dateOrdered: '10-01-2020',
+    status: 'not implemented',
+    priceDetermined: false,
   };
 
   const initialErrors = {
@@ -82,6 +95,15 @@ function NewOrder() {
         setSubmitDisabled('disabled');
       });
   }, [orderFormData]);
+
+  // Form submission
+
+  function handleSubmit(event) {
+    console.log(orderFormData);
+    event.preventDefault();
+
+    props.orderAdd(authState, orderFormData);
+  }
 
   // Ant styling
 
@@ -196,7 +218,11 @@ function NewOrder() {
         </Form.Item>
 
         <Form.Item {...submitLayout}>
-          <Button type="primary" disabled={submitDisabled}>
+          <Button
+            type="primary"
+            disabled={submitDisabled}
+            onClick={handleSubmit}
+          >
             Submit
           </Button>
         </Form.Item>
@@ -209,4 +235,4 @@ const mapStateToProps = state => {
   return {};
 };
 
-export default connect(mapStateToProps, {})(NewOrder);
+export default connect(mapStateToProps, { orderAdd })(NewOrder);

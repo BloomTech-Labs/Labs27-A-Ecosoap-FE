@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Typography, Collapse, Select, Input, Button } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
-import { ordersGet } from '../../../state/actions/ordersActions';
+import { ordersGet, orderDelete } from '../../../state/actions/ordersActions';
 import Order from '../../common/Order';
 import SearchResults from '../../common/SearchResults';
 import OrderEdit from '../../common/OrderEdit';
@@ -49,6 +49,10 @@ function Dashboard(props) {
   // States for edit order modal window
   const [isEditModalVisible, setEditModalVisible] = useState(false);
   const [editingOrder, setEditingOrder] = useState({});
+
+  function handleDelete(id) {
+    props.orderDelete(authState, id);
+  }
 
   return (
     <>
@@ -119,6 +123,7 @@ function Dashboard(props) {
                     setEditModalVisible={setEditModalVisible}
                     isEditModalVisible={isEditModalVisible}
                     setEditingOrder={setEditingOrder}
+                    onDelete={handleDelete}
                   />
                 </Panel>
               );
@@ -141,4 +146,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { ordersGet })(Dashboard);
+export default connect(mapStateToProps, { ordersGet, orderDelete })(Dashboard);

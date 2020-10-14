@@ -71,4 +71,7 @@ export const getOrderData = authState =>
   getData({ authState, url: ordersUrl, defaults: [] });
 
 export const postOrderData = (authState, order) =>
-  getData({ authState, url: ordersUrl, newData: order });
+  postData({ authState, url: ordersUrl, newData: order });
+
+export const deleteOrderData = (authState, id) =>
+  deleteData({ authState, url: `${ordersUrl}/${id}` });
