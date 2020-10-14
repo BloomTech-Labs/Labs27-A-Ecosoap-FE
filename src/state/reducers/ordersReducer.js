@@ -6,6 +6,8 @@ import {
   ORDER_ADD_FAILURE,
   ORDER_ADD_LOADING,
   ORDER_EDIT_SUCCESS,
+  ORDER_EDIT_FAILURE,
+  ORDER_EDIT_LOADING,
   ORDER_DELETE_SUCCESS,
 } from '../actions/actionTypes';
 
@@ -19,6 +21,7 @@ export default function ordersReducer(state = initialState, action) {
   switch (action.type) {
     case ORDERS_GET_LOADING:
     case ORDER_ADD_LOADING:
+    case ORDER_EDIT_LOADING:
       return { ...state, loading: true };
 
     case ORDERS_GET_SUCCESS:
@@ -26,18 +29,19 @@ export default function ordersReducer(state = initialState, action) {
 
     case ORDERS_GET_FAILURE:
     case ORDER_ADD_FAILURE:
+    case ORDER_EDIT_FAILURE:
       return { ...state, loading: false, error: action.payload };
 
     case ORDER_EDIT_SUCCESS:
-      const modifiedOrder = state.map(currentOrder => {
-        if (currentOrder.orderId === action.payload.orderId) {
+      const modifiedOrders = state.orders.map(currentOrder => {
+        if (currentOrder.id === action.payload.id) {
           return action.payload;
         } else {
           return currentOrder;
         }
       });
 
-      return { ...state, orders: modifiedOrder };
+      return { ...state, orders: modifiedOrders, loading: false };
 
     case ORDER_ADD_SUCCESS:
       return {
@@ -51,6 +55,7 @@ export default function ordersReducer(state = initialState, action) {
         orders: state.orders.filter(order => {
           return order.id !== action.payload;
         }),
+        loading: false,
       };
 
     default:

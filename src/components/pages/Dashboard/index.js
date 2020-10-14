@@ -27,7 +27,7 @@ function Dashboard(props) {
   // load orders
   useEffect(() => {
     props.ordersGet(authState);
-  }, [props.orders]);
+  }, []);
 
   // search for an order
   const [searchQuery, setSearchQuery] = useState('');

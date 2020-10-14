@@ -101,7 +101,6 @@ function NewOrder(props) {
   // Form submission
 
   function handleSubmit(event) {
-    console.log(orderFormData);
     event.preventDefault();
 
     props.orderAdd(authState, orderFormData);

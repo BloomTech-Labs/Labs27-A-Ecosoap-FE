@@ -85,10 +85,10 @@ export const orderEdit = (authState, id, updatedData) => dispatch => {
   });
 
   editOrderData(authState, id, updatedData)
-    .then(payload => {
+    .then(({ order }) => {
       dispatch({
         type: ORDER_EDIT_SUCCESS,
-        payload: id,
+        payload: order,
       });
     })
     .catch(err => {
