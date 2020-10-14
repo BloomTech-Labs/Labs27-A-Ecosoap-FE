@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import * as yup from 'yup';
 import { Typography, Input, Button, Form, Alert } from 'antd';
 import { useOktaAuth } from '@okta/okta-react';
@@ -12,6 +13,7 @@ const { Title } = Typography;
 
 function NewOrder(props) {
   const { authState } = useOktaAuth();
+  const { push } = useHistory();
 
   // Initial form data
 
@@ -103,6 +105,7 @@ function NewOrder(props) {
     event.preventDefault();
 
     props.orderAdd(authState, orderFormData);
+    push('/dashboard');
   }
 
   // Ant styling
