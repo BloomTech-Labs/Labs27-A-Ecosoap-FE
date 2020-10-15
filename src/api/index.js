@@ -1,52 +1,80 @@
 import axios from 'axios';
 
 // we will define a bunch of API calls here.
-const apiUrl = `${process.env.REACT_APP_API_URI}/profiles`;
+const profilesUrl = '/profiles';
+const ordersUrl = '/orders';
 
-const sleep = time =>
+export const sleep = time =>
   new Promise(resolve => {
     setTimeout(resolve, time);
   });
-
-const getExampleData = () => {
-  return axios
-    .get(`https://jsonplaceholder.typicode.com/photos?albumId=1`)
-    .then(response => response.data);
-};
 
 const getAuthHeader = authState => {
   if (!authState.isAuthenticated) {
     throw new Error('Not authenticated');
   }
+
   return { Authorization: `Bearer ${authState.idToken}` };
 };
 
-const getDSData = (url, authState) => {
-  // here's another way you can compose together your API calls.
-  // Note the use of GetAuthHeader here is a little different than in the getProfileData call.
-  const headers = getAuthHeader(authState);
-  if (!url) {
-    throw new Error('No URL provided');
-  }
-  return axios
-    .get(url, { headers })
-    .then(res => JSON.parse(res.data))
-    .catch(err => err);
+const api = authHeader => {
+  return axios.create({
+    headers: authHeader,
+    baseURL: process.env.REACT_APP_API_URI,
+  });
 };
 
-const apiAuthGet = authHeader => {
-  return axios.get(apiUrl, { headers: authHeader });
-};
-
-const getProfileData = authState => {
+const getData = async ({ authState, url, defaults }) => {
   try {
-    return apiAuthGet(getAuthHeader(authState)).then(response => response.data);
+    const { data } = await api(getAuthHeader(authState)).get(url);
+    return data;
   } catch (error) {
-    return new Promise(() => {
-      console.log(error);
-      return [];
-    });
+    console.log(error);
+    return defaults;
   }
 };
 
-export { sleep, getExampleData, getProfileData, getDSData };
+const postData = async ({ authState, url, newData }) => {
+  try {
+    const { data } = await api(getAuthHeader(authState)).post(url, newData);
+    return data;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+const putData = async ({ authState, url, updatedData }) => {
+  try {
+    const { data } = await api(getAuthHeader(authState)).put(url, updatedData);
+    return data;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+const deleteData = async ({ authState, url }) => {
+  try {
+    const { data } = await api(getAuthHeader(authState)).delete(url);
+    return data;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+export const getProfileData = authState =>
+  getData({ authState, url: profilesUrl, defaults: [] });
+
+export const getOrderData = authState =>
+  getData({ authState, url: ordersUrl, defaults: [] });
+
+export const postOrderData = (authState, order) =>
+  postData({ authState, url: ordersUrl, newData: order });
+
+export const deleteOrderData = (authState, id) =>
+  deleteData({ authState, url: `${ordersUrl}/${id}` });
+
+export const editOrderData = (authState, id, updatedData) =>
+  putData({ authState, url: `${ordersUrl}/${id}`, updatedData });

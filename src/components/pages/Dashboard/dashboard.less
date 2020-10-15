@@ -1,12 +1,14 @@
-.dashboard {
+.Dashboard {
     display: flex;
-    flex-direction: row;
-    align-items: baseline;
-    justify-content: space-between;    
-}
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 3rem;
 
-.searchBar{
-    border: none;
-    border-bottom: 1px black solid;
-    background-color: transparent;
+    h1 {
+        margin: 0;
+    }
+
+    & > div {
+        margin-left: 3rem;
+    }
 }

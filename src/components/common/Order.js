@@ -3,7 +3,12 @@ import { Button } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
 export default function Order(props) {
-  const { order, formattedDate } = props;
+  const { order, formattedDate, setEditModalVisible, setEditingOrder } = props;
+
+  function handleOrderEdit() {
+    setEditingOrder(order);
+    setEditModalVisible(true);
+  }
 
   return (
     <div>
@@ -33,8 +38,14 @@ export default function Order(props) {
         </div>
       )}
       <p>
-        <Button icon={<EditOutlined />}>Edit</Button>
-        <Button icon={<DeleteOutlined />} danger>
+        <Button icon={<EditOutlined />} onClick={() => handleOrderEdit()}>
+          Edit
+        </Button>
+        <Button
+          icon={<DeleteOutlined />}
+          danger
+          onClick={() => props.onDelete(order.id)}
+        >
           Cancel
         </Button>
       </p>

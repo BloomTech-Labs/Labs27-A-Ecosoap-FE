@@ -1,43 +1,53 @@
+// React imports
+
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import {
   BrowserRouter as Router,
   Route,
   useHistory,
   Switch,
 } from 'react-router-dom';
-import { Security, LoginCallback, SecureRoute } from '@okta/okta-react';
-
-import 'antd/dist/antd.less';
-
-import { NotFoundPage } from './components/pages/NotFound';
-import { ExampleListPage } from './components/pages/ExampleList';
-import { ProfileListPage } from './components/pages/ProfileList';
-import { LoginPage } from './components/pages/Login';
-import { HomePage } from './components/pages/Home';
-import { ExampleDataViz } from './components/pages/ExampleDataViz';
-import Dashboard from './components/pages/Dashboard';
-
-import { config } from './utils/oktaConfig';
-import { LoadingComponent } from './components/common';
 
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
+import { composeWithDevTools } from 'redux-devtools-extension';
+
+// Okta
+
+import { Security, LoginCallback, SecureRoute } from '@okta/okta-react';
+import { config } from './utils/oktaConfig';
+
+// Custom components
+
+import { LoadingComponent } from './components/common';
+import { NotFoundPage } from './components/pages/NotFound';
+import { ProfileListPage } from './components/pages/ProfileList';
+import { LoginPage } from './components/pages/Login';
+import { HomePage } from './components/pages/Home';
+import Dashboard from './components/pages/Dashboard';
+import NewOrder from './components/pages/NewOrder/NewOrder';
+import TopHeader from './components/common/TopHeader';
+
+// Reducers
 import rootReducer from './state/reducers';
 
-import TopHeader from './components/common/TopHeader';
+// Styles
+import 'antd/dist/antd.less';
 import { Layout } from 'antd';
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(thunk))
+);
 
 ReactDOM.render(
   <Router>
-    <React.StrictMode>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </React.StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
   </Router>,
   document.getElementById('root')
 );
@@ -69,10 +79,9 @@ function App() {
               exact
               component={() => <HomePage LoadingComponent={LoadingComponent} />}
             />
-            <SecureRoute path="/example-list" component={ExampleListPage} />
             <SecureRoute path="/profile-list" component={ProfileListPage} />
-            <SecureRoute path="/datavis" component={ExampleDataViz} />
             <SecureRoute path="/dashboard" component={Dashboard} />
+            <SecureRoute path="/new-order" component={NewOrder} />
             <Route component={NotFoundPage} />
           </Switch>
         </Content>
