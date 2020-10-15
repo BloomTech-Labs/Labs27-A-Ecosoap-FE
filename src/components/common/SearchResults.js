@@ -16,6 +16,7 @@ export default function SearchResults(props) {
 
     for (let order of orders) {
       const contactName = order.contactName.trim().toLowerCase();
+      const id = order.id.trim().toLowerCase();
       const organization = order.organization?.trim().toLowerCase();
       const address = order.address.trim().toLowerCase();
       const country = order.country.trim().toLowerCase();
@@ -24,6 +25,7 @@ export default function SearchResults(props) {
       if (
         contactName.includes(modifiedQuery) ||
         organization?.includes(modifiedQuery) ||
+        id.includes(modifiedQuery) ||
         address.includes(modifiedQuery) ||
         country.includes(modifiedQuery) ||
         contactEmail.includes(modifiedQuery)
@@ -49,7 +51,7 @@ export default function SearchResults(props) {
 
                 return (
                   <Panel
-                    header={`Order #${order.orderId} (${formattedDate})`}
+                    header={`Ordered ${formattedDate} - ${order.id}`}
                     key={key}
                   >
                     <Order order={order} formattedDate={formattedDate} />
