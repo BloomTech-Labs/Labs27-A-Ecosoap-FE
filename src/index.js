@@ -13,6 +13,7 @@ import {
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 // Okta
 
@@ -39,7 +40,10 @@ import rootReducer from './state/reducers';
 import 'antd/dist/antd.less';
 import { Layout } from 'antd';
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(thunk))
+);
 
 ReactDOM.render(
   <Router>
