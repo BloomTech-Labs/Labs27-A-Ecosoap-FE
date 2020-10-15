@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import { Typography, Form, Input, Button, Alert } from 'antd';
 import * as yup from 'yup';
+import jwt from 'jsonwebtoken';
+import { useOktaAuth } from '@okta/okta-react/dist/OktaContext';
 
 import profileSchema from './profileSchema';
+import { getProfile } from '../../../state/actions/profileActions';
 
 // Ant styling
 
@@ -21,17 +25,19 @@ const errorLayout = {
   wrapperCol: { offset: 3, span: 7 },
 };
 
-function Profile() {
+function Profile(props) {
+  const { authState } = useOktaAuth();
+
   // Initial data
 
   const initialFormData = {
-    contactName: 'Jamie',
-    contactPhone: '12345678',
-    contactEmail: 'example@example.com',
-    organization: 'Company Inc.',
-    address: '123 St. NE',
-    country: 'US',
-    organizationWebsite: 'example.com',
+    contactName: '',
+    contactPhone: '',
+    contactEmail: '',
+    organization: '',
+    address: '',
+    country: '',
+    organizationWebsite: '',
   };
 
   const initialErrors = {
@@ -49,6 +55,22 @@ function Profile() {
   const [formErrors, setFormErrors] = useState(initialErrors);
   const [formData, setFormData] = useState(initialFormData);
   const [submitDisabled, setSubmitDisabled] = useState('disabled');
+
+  // load profile info
+  useEffect(() => {
+    const decoded = jwt.decode(authState.idToken);
+    const profileId = decoded.sub;
+    props.getProfile(authState, profileId);
+  }, []);
+
+  // Update the state when profile data is loaded
+  useEffect(() => {
+    setFormData({
+      ...formData,
+      contactEmail: props.profile.profile.email, // ### TEMP
+      contactName: props.profile.profile.name, // ### TEMP
+    });
+  }, [props.profile.profile]);
 
   // Check form validity on every change, enable/disable the submit button
   useEffect(() => {
@@ -78,11 +100,6 @@ function Profile() {
 
   function handleSubmit(event) {
     console.log('submit handler');
-  }
-
-  function handleFormCancel(event) {
-    setFormData(initialFormData);
-    setFormErrors(initialErrors);
   }
 
   // Checks the validity of an input field
@@ -186,13 +203,15 @@ function Profile() {
           >
             Save
           </Button>
-          <Button type="default" onClick={handleFormCancel}>
-            Cancel
-          </Button>
         </Form.Item>
       </Form>
     </div>
   );
 }
 
-export default Profile;
+function mapStateToProps(state) {
+  const { profile } = state;
+  return { profile };
+}
+
+export default connect(mapStateToProps, { getProfile })(Profile);

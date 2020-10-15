@@ -64,8 +64,8 @@ const deleteData = async ({ authState, url }) => {
   }
 };
 
-export const getProfileData = authState =>
-  getData({ authState, url: profilesUrl, defaults: [] });
+export const getProfileData = (authState, id) =>
+  getData({ authState, url: `${profilesUrl}/${id}`, defaults: [] });
 
 export const getOrderData = authState =>
   getData({ authState, url: ordersUrl, defaults: [] });
