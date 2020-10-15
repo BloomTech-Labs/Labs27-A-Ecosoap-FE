@@ -33,6 +33,7 @@ const newOrderSchema = yup.object().shape({
   comments: yup.string(),
   quantity: yup
     .number()
+    .integer('The quantity must be a whole number')
     .positive()
     .min(1, 'The minimum quantity is 1')
     .nullable(true)

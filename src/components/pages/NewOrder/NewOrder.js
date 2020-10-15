@@ -63,7 +63,7 @@ function NewOrder(props) {
     // sync with state
     setOrderFormData({
       ...orderFormData,
-      [field.id]: field.value,
+      [field.id]: field.type === 'number' ? Number(field.value) : field.value,
     });
 
     // check if valid
@@ -213,6 +213,7 @@ function NewOrder(props) {
           <Input
             type="number"
             min="1"
+            step="1"
             value={orderFormData.quantity}
             onChange={inputChangeHandler}
             id="quantity"
