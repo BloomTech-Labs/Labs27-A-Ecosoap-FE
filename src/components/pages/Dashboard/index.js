@@ -120,7 +120,7 @@ function Dashboard(props) {
 
               return (
                 <Panel
-                  header={`Ordered ${formattedDate}`}
+                  header={`Ordered ${formattedDate} - ${order.id}`}
                   key={index}
                   isEditModalVisible={isEditModalVisible}
                   setEditModalVisible={setEditModalVisible}
