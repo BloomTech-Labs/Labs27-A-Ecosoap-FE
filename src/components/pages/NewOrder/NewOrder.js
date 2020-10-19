@@ -5,11 +5,16 @@ import * as yup from 'yup';
 import { Typography, Input, Button, Form, Alert } from 'antd';
 import { useOktaAuth } from '@okta/okta-react';
 
+import { loadStripe } from '@stripe/stripe-js';
+
 import { orderAdd } from '../../../state/actions/ordersActions';
 import newOrderSchema from './newOrderSchema';
 import './NewOrder.less';
 
 const { Title } = Typography;
+
+// recreating the `Stripe` object on every render.
+const stripePromise = loadStripe('pk_test_TYooMQauvdEDq54NiTphI7jx');
 
 function NewOrder(props) {
   const { authState } = useOktaAuth();
@@ -100,12 +105,36 @@ function NewOrder(props) {
 
   // Form submission
 
-  function handleSubmit(event) {
-    event.preventDefault();
+  // function handleSubmit(event) {
+  //   event.preventDefault();
 
+  //   props.orderAdd(authState, orderFormData);
+  //   push('/dashboard');
+  // }
+
+  const handleClick = async event => {
     props.orderAdd(authState, orderFormData);
-    push('/dashboard');
-  }
+    // Get Stripe.js instance
+    const stripe = await stripePromise;
+
+    // Call your backend to create the Checkout Session
+    const response = await fetch('/create-checkout-session', {
+      method: 'POST',
+    });
+
+    const session = await response.json();
+
+    // When the customer clicks on the button, redirect them to Checkout.
+    const result = await stripe.redirectToCheckout({
+      sessionId: session.id,
+    });
+
+    if (result.error) {
+      // If `redirectToCheckout` fails due to a browser or network
+      // error, display the localized error message to your customer
+      // using `result.error.message`.
+    }
+  };
 
   // Ant styling
 
@@ -224,7 +253,7 @@ function NewOrder(props) {
           <Button
             type="primary"
             disabled={submitDisabled}
-            onClick={handleSubmit}
+            onClick={handleClick}
           >
             Submit
           </Button>
