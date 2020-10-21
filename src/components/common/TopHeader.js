@@ -26,6 +26,9 @@ export default function TopHeader() {
             <Link to="/dashboard">Dashboard</Link>
           </Menu.Item>
           <Menu.Item key="3">
+            <Link to="/profile">My Profile</Link>
+          </Menu.Item>
+          <Menu.Item key="4">
             <a href="/#" onClick={logout}>
               Logout
             </a>

@@ -30,6 +30,7 @@ import { HomePage } from './components/pages/Home';
 import Dashboard from './components/pages/Dashboard';
 import NewOrder from './components/pages/NewOrder/NewOrder';
 import TopHeader from './components/common/TopHeader';
+import Profile from './components/pages/Profile/Profile';
 
 // Reducers
 import rootReducer from './state/reducers';
@@ -82,6 +83,7 @@ function App() {
             <SecureRoute path="/profile-list" component={ProfileListPage} />
             <SecureRoute path="/dashboard" component={Dashboard} />
             <SecureRoute path="/new-order" component={NewOrder} />
+            <SecureRoute path="/profile" component={Profile} />
             <Route component={NotFoundPage} />
           </Switch>
         </Content>

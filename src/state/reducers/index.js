@@ -4,7 +4,9 @@
 import { combineReducers } from 'redux';
 
 import ordersReducer from './ordersReducer';
+import profileReducer from './profileReducer';
 
 export default combineReducers({
   orders: ordersReducer,
+  profile: profileReducer,
 });
