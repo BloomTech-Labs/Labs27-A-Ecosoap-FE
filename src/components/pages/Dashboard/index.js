@@ -20,14 +20,13 @@ import { useOktaAuth } from '@okta/okta-react/dist/OktaContext';
 const { Title, Paragraph } = Typography;
 const { Panel } = Collapse;
 
-function Dashboard(props) {
-  const orders = props.orders;
+function Dashboard({ orders, ordersGet, orderDelete, orderEdit }) {
   const { authState } = useOktaAuth();
 
   // load orders
   useEffect(() => {
-    props.ordersGet(authState);
-  }, []);
+    ordersGet(authState);
+  }, [ordersGet, authState]);
 
   // search for an order
   const [searchQuery, setSearchQuery] = useState('');
@@ -55,11 +54,11 @@ function Dashboard(props) {
   const [editingOrder, setEditingOrder] = useState({});
 
   function handleDelete(id) {
-    props.orderDelete(authState, id);
+    orderDelete(authState, id);
   }
 
   function handleEdit(id) {
-    props.orderEdit(authState, id, editingOrder);
+    orderEdit(authState, id, editingOrder);
   }
 
   return (
@@ -115,7 +114,7 @@ function Dashboard(props) {
                 (priceFilter === 'undetermined' &&
                   order.priceDetermined === false)
               ) {
-                return;
+                return <></>;
               }
 
               return (

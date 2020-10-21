@@ -24,11 +24,9 @@ import { config } from './utils/oktaConfig';
 
 import { LoadingComponent } from './components/common';
 import { NotFoundPage } from './components/pages/NotFound';
-import { ExampleListPage } from './components/pages/ExampleList';
 import { ProfileListPage } from './components/pages/ProfileList';
 import { LoginPage } from './components/pages/Login';
 import { HomePage } from './components/pages/Home';
-import { ExampleDataViz } from './components/pages/ExampleDataViz';
 import Dashboard from './components/pages/Dashboard';
 import NewOrder from './components/pages/NewOrder/NewOrder';
 import TopHeader from './components/common/TopHeader';
@@ -82,9 +80,7 @@ function App() {
               exact
               component={() => <HomePage LoadingComponent={LoadingComponent} />}
             />
-            <SecureRoute path="/example-list" component={ExampleListPage} />
             <SecureRoute path="/profile-list" component={ProfileListPage} />
-            <SecureRoute path="/datavis" component={ExampleDataViz} />
             <SecureRoute path="/dashboard" component={Dashboard} />
             <SecureRoute path="/new-order" component={NewOrder} />
             <SecureRoute path="/profile" component={Profile} />
