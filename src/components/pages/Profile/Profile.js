@@ -66,10 +66,9 @@ function Profile({ getProfile, editProfile, profile }) {
   useEffect(() => {
     const { id, type, ...profileData } = profile;
     setFormData({
-      ...formData,
       ...profileData,
     });
-  }, [profile]);
+  }, [profile, setFormData]);
 
   // Check form validity on every change, enable/disable the submit button
   useEffect(() => {
@@ -121,8 +120,9 @@ function Profile({ getProfile, editProfile, profile }) {
       <div className="errors">
         <Form {...errorLayout}>
           <Form.Item>
-            {Object.keys(formErrors).map((error, key) => {
-              if (formErrors[error]) {
+            {Object.keys(formErrors)
+              .filter(error => formErrors[error])
+              .map((error, key) => {
                 return (
                   <Alert
                     message={formErrors[error]}
@@ -131,8 +131,7 @@ function Profile({ getProfile, editProfile, profile }) {
                     closable
                   />
                 );
-              }
-            })}
+              })}
           </Form.Item>
         </Form>
       </div>
