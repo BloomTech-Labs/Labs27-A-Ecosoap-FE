@@ -6,7 +6,7 @@ const profileSchema = yup.object().shape({
     .trim()
     .min(2, 'The name must be at least two characters long')
     .required('Please enter your name'),
-  organization: yup
+  organizationName: yup
     .string()
     .trim()
     .min(3, 'Organization name is too short'),
@@ -16,7 +16,7 @@ const profileSchema = yup.object().shape({
     .trim()
     .min(6, 'Phone number is too short')
     .required('Please enter your contact phone'),
-  contactEmail: yup
+  email: yup
     .string()
     .trim()
     .min(5, 'E-mail must be at least 5 characters long')

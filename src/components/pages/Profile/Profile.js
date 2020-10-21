@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Typography, Form, Input, Button, Alert } from 'antd';
 import * as yup from 'yup';
-import jwt from 'jsonwebtoken';
 import { useOktaAuth } from '@okta/okta-react/dist/OktaContext';
 
 import profileSchema from './profileSchema';
-import { getProfile } from '../../../state/actions/profileActions';
+import { getProfile, editProfile } from '../../../state/actions/profileActions';
 
 // Ant styling
 
@@ -25,28 +25,29 @@ const errorLayout = {
   wrapperCol: { offset: 3, span: 7 },
 };
 
-function Profile(props) {
+function Profile({ getProfile, editProfile, profile }) {
   const { authState } = useOktaAuth();
+  const history = useHistory();
 
   // Initial data
 
   const initialFormData = {
     contactName: '',
     contactPhone: '',
-    contactEmail: '',
-    organization: '',
+    email: '',
     address: '',
     country: '',
+    organizationName: '',
     organizationWebsite: '',
   };
 
   const initialErrors = {
     contactName: '',
     contactPhone: '',
-    contactEmail: '',
-    organization: '',
+    email: '',
     address: '',
     country: '',
+    organizationName: '',
     organizationWebsite: '',
   };
 
@@ -54,23 +55,21 @@ function Profile(props) {
 
   const [formErrors, setFormErrors] = useState(initialErrors);
   const [formData, setFormData] = useState(initialFormData);
-  const [submitDisabled, setSubmitDisabled] = useState('disabled');
+  const [submitDisabled, setSubmitDisabled] = useState(true);
 
   // load profile info
   useEffect(() => {
-    const decoded = jwt.decode(authState.idToken);
-    const profileId = decoded.sub;
-    props.getProfile(authState, profileId);
-  }, []);
+    getProfile(authState);
+  }, [getProfile, authState]);
 
   // Update the state when profile data is loaded
   useEffect(() => {
+    const { id, type, ...profileData } = profile;
     setFormData({
       ...formData,
-      contactEmail: props.profile.profile.email, // ### TEMP
-      contactName: props.profile.profile.name, // ### TEMP
+      ...profileData,
     });
-  }, [props.profile.profile]);
+  }, [profile]);
 
   // Check form validity on every change, enable/disable the submit button
   useEffect(() => {
@@ -78,10 +77,10 @@ function Profile(props) {
       .reach(profileSchema)
       .validate(formData)
       .then(valid => {
-        setSubmitDisabled('');
+        setSubmitDisabled(false);
       })
       .catch(err => {
-        setSubmitDisabled('disabled');
+        setSubmitDisabled(true);
       });
   }, [formData]);
 
@@ -98,24 +97,23 @@ function Profile(props) {
     checkField(field);
   }
 
-  function handleSubmit(event) {
-    console.log('submit handler');
-  }
+  const handleSubmit = event => {
+    event.preventDefault();
+    editProfile(authState, formData, history);
+  };
 
   // Checks the validity of an input field
-  function checkField(field) {
+  const checkField = field => {
     yup
       .reach(profileSchema, field.id)
       .validate(field.value)
       .then(valid => {
         setFormErrors({ ...formErrors, [field.id]: '' });
-        setSubmitDisabled('');
       })
       .catch(err => {
         setFormErrors({ ...formErrors, [field.id]: err.errors[0] });
-        setSubmitDisabled('disabled');
       });
-  }
+  };
 
   return (
     <div>
@@ -149,8 +147,8 @@ function Profile(props) {
 
         <Form.Item label="Organization:">
           <Input
-            id="organization"
-            value={formData.organization}
+            id="organizationName"
+            value={formData.organizationName}
             onChange={inputChangeHandler}
           />
         </Form.Item>
@@ -173,8 +171,8 @@ function Profile(props) {
 
         <Form.Item label="Contact e-mail:">
           <Input
-            id="contactEmail"
-            value={formData.contactEmail}
+            id="email"
+            value={formData.email}
             onChange={inputChangeHandler}
           />
         </Form.Item>
@@ -209,9 +207,8 @@ function Profile(props) {
   );
 }
 
-function mapStateToProps(state) {
-  const { profile } = state;
+const mapStateToProps = ({ profile: { profile } }) => {
   return { profile };
-}
+};
 
-export default connect(mapStateToProps, { getProfile })(Profile);
+export default connect(mapStateToProps, { getProfile, editProfile })(Profile);
