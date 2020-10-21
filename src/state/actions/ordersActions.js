@@ -40,7 +40,7 @@ export const ordersGet = authState => dispatch => {
     });
 };
 
-export const orderAdd = (authState, newOrder) => dispatch => {
+export const orderAdd = (authState, newOrder, stripe, history) => dispatch => {
   dispatch({
     type: ORDER_ADD_LOADING,
   });
@@ -50,6 +50,12 @@ export const orderAdd = (authState, newOrder) => dispatch => {
         type: ORDER_ADD_SUCCESS,
         payload: order,
       });
+
+      if (order.priceDetermined) {
+        stripe.redirectToCheckout({ sessionId: order.id }).then(console.log);
+      } else {
+        history.push('dashboard');
+      }
     })
     .catch(err => {
       dispatch({

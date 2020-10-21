@@ -34,7 +34,7 @@ export default function SearchResults(props) {
       }
     }
     setSearchResults(found);
-  }, [searchQuery]);
+  }, [searchQuery, orders, setSearchResults]);
 
   return (
     <>
