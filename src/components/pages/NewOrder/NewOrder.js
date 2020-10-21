@@ -5,31 +5,36 @@ import * as yup from 'yup';
 import { Typography, Input, Button, Form, Alert } from 'antd';
 import { useOktaAuth } from '@okta/okta-react';
 
+import { loadStripe } from '@stripe/stripe-js';
+
 import { orderAdd } from '../../../state/actions/ordersActions';
 import newOrderSchema from './newOrderSchema';
 import './NewOrder.less';
 
 const { Title } = Typography;
 
+// recreating the `Stripe` object on every render.
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
+
 function NewOrder(props) {
   const { authState } = useOktaAuth();
-  const { push } = useHistory();
+  const history = useHistory();
 
   // Initial form data
 
   const sample = {
-    contactName: 'bob',
-    contactPhone: '2498239283',
-    contactEmail: 'bob@bobsheepshack.com',
-    organization: 'bob sheep shack',
-    address: '123 wallaby way',
-    country: 'USA',
-    organizationWebsite: 'bobsheepshack.com',
-    quantity: 1,
+    contactName: '',
+    contactPhone: '',
+    contactEmail: '',
+    organization: '',
+    address: '',
+    country: '',
+    organizationWebsite: '',
+    quantity: 100,
 
     /*
-      the following fields should be implemented on the backend
-    */
+        the following fields should be implemented on the backend
+      */
 
     buyerId: 'not implemented',
     dateOrdered: '10-01-2020',
@@ -100,15 +105,15 @@ function NewOrder(props) {
 
   // Form submission
 
-  function handleSubmit(event) {
+  const handleSubmit = async event => {
     event.preventDefault();
 
-    props.orderAdd(authState, orderFormData);
-    push('/dashboard');
-  }
+    const stripe = await stripePromise;
+
+    props.orderAdd(authState, orderFormData, stripe, history);
+  };
 
   // Ant styling
-
   const orderFormLayout = {
     labelCol: { span: 3 },
     wrapperCol: { span: 7 },
@@ -128,18 +133,16 @@ function NewOrder(props) {
       <div className="errors">
         <Form {...errorLayout}>
           <Form.Item>
-            {Object.keys(formErrors).map((error, key) => {
-              if (formErrors[error]) {
-                return (
-                  <Alert
-                    message={formErrors[error]}
-                    key={key}
-                    type="error"
-                    closable
-                  />
-                );
-              }
-            })}
+            {Object.keys(formErrors)
+              .filter(error => formErrors[error])
+              .map((error, key) => (
+                <Alert
+                  message={formErrors[error]}
+                  key={key}
+                  type="error"
+                  closable
+                />
+              ))}
           </Form.Item>
         </Form>
       </div>
