@@ -2,6 +2,8 @@
 
 Saving, Sanitizing, and Supplying Recycled Soap for the Developing World
 
+[![Presentation](http://img.youtube.com/vi/nup2R52hiuU/0.jpg)](http://www.youtube.com/watch?v=nup2R52hiuU)
+
 ## Front-end built using:
 * React
 * Ant Design UI library - styling
