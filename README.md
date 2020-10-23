@@ -2,7 +2,7 @@
 
 Saving, Sanitizing, and Supplying Recycled Soap for the Developing World
 
-[![Presentation](http://img.youtube.com/vi/nup2R52hiuU/0.jpg)](http://www.youtube.com/watch?v=nup2R52hiuU)
+[![Presentation](http://img.youtube.com/vi/nup2R52hiuU/0.jpg)](https://youtu.be/ST1ois1TUYs)
 
 ## Front-end built using:
 * React
